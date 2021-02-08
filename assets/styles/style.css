@@ -1,0 +1,200 @@
+body {
+    margin: 40px 32px;
+    font-size: 18px;
+    line-height: normal;
+    font-family: "Muller", sans-serif;
+}
+
+
+.visually-hidden,
+.todo-list-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    border: 0;
+    clip: rect(0 0 0 0);
+    clip-path: inset(100%);
+}
+
+
+.hidden {
+    display: none;
+}
+
+.buttons-container {
+    display: flex;
+}
+
+.header-buttons {
+    flex-grow: 1;
+    margin: 20px 5px;
+    padding: 12px;
+    font: inherit;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+    user-select: none;
+    touch-action: manipulation;
+}
+
+[data-action="show"] {
+    margin-left: 0;
+    background-color: #69b253;
+}
+
+[data-action="show"]:hover,
+[data-action="show"]:focus {
+    background-color: #22ae05;
+    box-shadow: 0 0 8px #3f9b1f;
+    outline: none;
+    cursor: pointer;
+}
+
+[data-action="show"]:active {
+    background-color: #217500;
+}
+
+
+[data-action="hide"] {
+    margin-right: 0;
+    background-color: #ff7e4a;
+}
+
+[data-action="hide"]:hover,
+[data-action="hide"]:focus {
+    background-color: #ff5d1f;
+    box-shadow: 0 0 8px #f58346;
+    outline: none;
+    cursor: pointer;
+}
+
+[data-action="hide"]:active {
+    background-color: #b53300;
+}
+
+
+.todo-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.todo-list-item {
+    margin-bottom: 12px;
+    height: 40px;
+    background-color: #fafafa;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease-out;
+}
+
+.completed {
+    overflow: hidden;
+    height: 0;
+    margin: 0;
+    transition: all 0.5s ease-in-out;
+}
+
+.todo-list-item label {
+    display: block;
+    padding: 10px 20px;
+    cursor: pointer;
+    user-select: none; /*запрещает выделение текста*/
+}
+
+.todo-list-item span {
+    display: flex;
+    align-items: center;
+}
+
+.todo-list-input + span::before {
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 18px;
+    background-color: #ffffff;
+    border: 2px solid #29ba00;
+    border-radius: 5px;
+}
+
+
+.todo-list-input:checked + span::before {
+    background-color: #29ba00;
+    background-image: url("../images/check-white.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.todo-list-input:not(:checked):hover + span::before,
+.todo-list-input:not(:checked):focus + span::before {
+    background-color: #e0f5d8;
+}
+
+.empty-tasks {
+    color: #69b253;
+}
+
+.empty-tasks::before {
+    content: "";
+    width: 14px;
+    height: 13px;
+    margin-right: 13px;
+}
+
+.add-form {
+    display: flex;
+}
+
+.add-form-input {
+    flex-grow: 1;
+    box-sizing: border-box;
+    height: 46px;
+    margin-right: 16px;
+    padding: 12px;
+    font: inherit;
+    border: 2px solid #b3b3b3;
+    border-radius: 5px;
+}
+
+.add-form-input:focus {
+    border: 2px solid #33c113;
+    outline: none;
+}
+
+.add-form-input:hover {
+    box-shadow: 0 0 8px #3f9b1f;
+}
+
+.add-form-input::placeholder {
+    color: #c9c9ca;
+}
+
+.add-form-button {
+    flex-shrink: 0;
+    padding: 12px;
+    font: inherit;
+    color: #ffffff;
+    background-color: #69b253;
+    border: none;
+    border-radius: 4px;
+    user-select: none;
+    touch-action: manipulation; /*Включает действия сжимания и масштабирования, но отключает другие действия, например двойное касание для масштабирования*/
+}
+
+.add-form-button:hover,
+.add-form-button:focus {
+    background-color: #22ae05;
+    box-shadow: 0 0 8px #3f9b1f;
+    outline: none;
+    cursor: pointer;
+}
+
+.add-form-button:active {
+    background-color: #217500;
+}

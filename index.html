@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8">
+	<title>Список дел</title>
+	<link href="./assets/styles/style.css" rel="stylesheet">
+</head>
+<body>
+<h1 class="visually-hidden">Список дел</h1>
+
+<div class="buttons-container">
+	<button data-action="show" class="header-buttons">Показать выполненные задачи</button>
+	<button data-action="hide" class="header-buttons">Скрыть выполненные задачи</button>
+</div>
+
+
+<ul class="todo-list">
+	<li class="todo-list-item">
+		<label>
+			<input class="todo-list-input" type="checkbox">
+			<span>Покормить шерстяного</span>
+		</label>
+	</li>
+	<li class="todo-list-item">
+		<label>
+			<input class="todo-list-input" type="checkbox">
+			<span>Выкинуть мусор</span>
+		</label>
+	</li>
+	<li class="todo-list-item">
+		<label>
+			<input class="todo-list-input" type="checkbox">
+			<span>Разбудить соседей</span>
+		</label>
+	</li>
+	<li class="todo-list-item">
+		<label>
+			<input class="todo-list-input" type="checkbox">
+			<span>Лечь спать</span>
+		</label>
+	</li>
+</ul>
+
+<!--<p class="empty-tasks hidden">Ты справился, до завтра.</p>-->
+<form class="add-form" action="" method="post">
+	<input class="add-form-input" type="text" aria-label="Описание задачи" placeholder="Например, уехать из страны" required>
+	<button class="add-form-button" type="submit">Добавить задачу</button>
+</form>
+
+<template id="task-template">
+	<li class="todo-list-item">
+		<label>
+			<input type="checkbox" class="todo-list-input">
+			<span></span>
+		</label>
+	</li>
+</template>
+<script src="./assets/scripts/script.js"></script>
+</body>
+</html>
