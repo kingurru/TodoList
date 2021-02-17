@@ -52,24 +52,31 @@ let addCheckHandler = function (item) {
     })
 
     checkbox.addEventListener('change', function (evt) {
-        let taskText = (evt.target).nextElementSibling.textContent
-        let keys = Object.keys(localStorage)
-        for (let key of keys) {
-            if (localStorage.getItem(key) === taskText) {
-                localStorage.removeItem(key)
+            let taskText = (evt.target).nextElementSibling.textContent
+
+            for (let i = 0; i < localStorage.length; i++) {
+                if (localStorage.getItem(i) === taskText) {
+                    localStorage.removeItem(i)
+                    tasksArr.splice(i, 1)
+                }
             }
-        }
+            let listCheckbox = list.querySelectorAll(':checked')
+            console.log(listCheckbox.length)
+            if (listCheckbox.length === 0) {
+                hideList.disabled = true
+                hideList.removeAttribute('data-action')
+            }
+            if (checkbox.checked && hideList.disabled === false && showList.disabled === true) {
+                console.log(checkbox)
+            } else if (checkbox.checked) {
+                item.classList.toggle('completed')
+                showList.disabled = false
+                showList.setAttribute('data-action', 'show')
+            }
 
-        if (checkbox.checked && hideList.disabled === false && showList.disabled === true) {
-
-        } else if (checkbox.checked) {
-            item.classList.toggle('completed')
-            showList.disabled = false
-            showList.setAttribute('data-action', 'show')
         }
-    })
+    )
 }
-
 
 for (let i = 0; i < items.length; i++) {
     addCheckHandler(items[i])
@@ -77,22 +84,18 @@ for (let i = 0; i < items.length; i++) {
 
 newItemForm.addEventListener('submit', function (evt) {
     evt.preventDefault()
+
     let taskText = newItemTitle.value
     let task = newItemTemplate.cloneNode(true)
     let taskDescription = task.querySelector('span')
     taskDescription.textContent = taskText
 
-    list.appendChild(task)
-
     tasksArr.push(taskText)
-    // console.log(tasksArr)
     for (let i = 0; i < tasksArr.length; i++) {
         localStorage.setItem(i, tasksArr[i])
-        // console.log(i, localStorage.getItem(i))
     }
-
+    list.appendChild(task)
 
     addCheckHandler(task)
     newItemTitle.value = ''
 })
-
