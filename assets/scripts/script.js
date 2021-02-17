@@ -14,10 +14,11 @@ let addCheckHandler = function (item) {
 
     let checkbox = item.querySelector('.todo-list-input')
     showList.addEventListener('click', function () {
-
         if (checkbox.checked) {
             showList.disabled = true
+            hideList.disabled = false
             showList.removeAttribute('data-action')
+            hideList.setAttribute('data-action', 'hide')
             item.classList.remove('completed')
 
         }
@@ -26,16 +27,23 @@ let addCheckHandler = function (item) {
     hideList.addEventListener('click', function () {
         if (checkbox.checked) {
             showList.disabled = false
+            hideList.disabled = true
+            hideList.removeAttribute('data-action')
             showList.setAttribute('data-action', 'show')
             item.classList.add('completed')
         }
     })
 
     checkbox.addEventListener('change', function () {
-        // item.remove()
-        if (checkbox.checked && showList.disabled === false) {
-            item.classList.toggle('completed')
+        if (checkbox.checked && hideList.disabled === false && showList.disabled === true) {
 
+        }
+        else if (checkbox.checked) {
+            item.classList.toggle('completed')
+            showList.disabled = false
+            showList.setAttribute('data-action', 'show')
+
+            //showList.setAttribute('data-action', 'show')
         }
     })
 }
