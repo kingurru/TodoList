@@ -5,9 +5,9 @@ let newItemForm = document.querySelector('.add-form')
 let newItemTitle = newItemForm.querySelector('.add-form-input')
 let taskTemplate = document.querySelector('#task-template').content
 let newItemTemplate = taskTemplate.querySelector('.todo-list-item')
-let showList = document.querySelector('[data-action="show"]')
-let hideList = document.querySelector('[data-action="hide"]')
-let tasksCompleted = document.getElementsByClassName('completed')
+let showList = document.querySelector('.showBtn')
+let hideList = document.querySelector('.hideBtn')
+//let tasksCompleted = document.getElementsByClassName('completed')
 
 
 let addCheckHandler = function (item) {
@@ -16,6 +16,8 @@ let addCheckHandler = function (item) {
     showList.addEventListener('click', function () {
 
         if (checkbox.checked) {
+            showList.disabled = true
+            showList.removeAttribute('data-action')
             item.classList.remove('completed')
 
         }
@@ -23,14 +25,17 @@ let addCheckHandler = function (item) {
 
     hideList.addEventListener('click', function () {
         if (checkbox.checked) {
+            showList.disabled = false
+            showList.setAttribute('data-action', 'show')
             item.classList.add('completed')
         }
     })
 
     checkbox.addEventListener('change', function () {
         // item.remove()
-        if (checkbox.checked) {
+        if (checkbox.checked && showList.disabled === false) {
             item.classList.toggle('completed')
+
         }
     })
 }
