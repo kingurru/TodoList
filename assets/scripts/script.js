@@ -11,23 +11,12 @@ let tasksArr = []
 for (let i = 0; i < localStorage.length; i++) {
     let task = newItemTemplate.cloneNode(true)
     let taskDescription = task.querySelector('span')
-
     taskDescription.textContent = localStorage.getItem(i)
     tasksArr.push(localStorage.getItem(i))
     list.appendChild(task)
-
-    /* let checkboxList = list.querySelectorAll('input')
-         for (let i = 0; i <checkboxList.length; i++) {
-             if (!checkboxList[i].checked) {
-
-             }
-         }
-     console.log('чеки: ', checkboxList)*/
 }
 
-
 let addCheckHandler = function (item) {
-
     let checkbox = item.querySelector('.todo-list-input')
 
     showList.addEventListener('click', function () {
@@ -37,7 +26,6 @@ let addCheckHandler = function (item) {
             showList.removeAttribute('data-action')
             hideList.setAttribute('data-action', 'hide')
             item.classList.remove('completed')
-
         }
     })
 
@@ -51,15 +39,15 @@ let addCheckHandler = function (item) {
         }
     })
 
-    checkbox.addEventListener('change', function (evt) {
-            let taskText = (evt.target).nextElementSibling.textContent
-
+    checkbox.addEventListener('change', function () {
+      /*   // модуль удаления задач из LocalStorage, который срабатывает при изменении значения <input>
+           let taskText = (evt.target).nextElementSibling.textContent
             for (let i = 0; i < localStorage.length; i++) {
                 if (localStorage.getItem(i) === taskText) {
                     localStorage.removeItem(i)
                     tasksArr.splice(i, 1)
                 }
-            }
+            }*/
             let listCheckbox = list.querySelectorAll(':checked')
             console.log(listCheckbox.length)
             if (listCheckbox.length === 0) {
@@ -99,3 +87,4 @@ newItemForm.addEventListener('submit', function (evt) {
     addCheckHandler(task)
     newItemTitle.value = ''
 })
+
