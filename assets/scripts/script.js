@@ -7,7 +7,13 @@ let newItemTemplate = taskTemplate.querySelector('.todo-list-item')
 let showList = document.querySelector('.showBtn')
 let hideList = document.querySelector('.hideBtn')
 let count = localStorage.length
+let objTask = {}
+
 // let tasksArr = []
+
+function getCheckedElements() {
+    return document.querySelectorAll(':checked')
+}
 
 localStorage.clear()
 /*for (let i = 0; i < localStorage.length; i++) {
@@ -21,7 +27,8 @@ localStorage.clear()
 
 let addCheckHandler = function (item) {
     let checkbox = item.querySelector('.todo-list-input')
-
+    let checkboxList = document.querySelectorAll('.todo-list-input')
+    console.log(checkboxList)
     showList.addEventListener('click', function () {
         if (checkbox.checked) {
             showList.disabled = true
@@ -51,27 +58,37 @@ let addCheckHandler = function (item) {
                           tasksArr.splice(i, 1)
                       }
                   }*/
-            let taskText = (evt.target).nextElementSibling.textContent
-            let listCheckbox = list.querySelectorAll(':checked')
-            if (listCheckbox.length === 0) {
+            let completedTasks = getCheckedElements()
+            if (completedTasks.length === 0) {
                 hideList.disabled = true
                 hideList.removeAttribute('data-action')
             }
-            if (checkbox.checked && hideList.disabled === false && showList.disabled === true) {
+            if (hideList.disabled === false && showList.disabled === true) {
+                console.log('SHOW LIST off & HIDE LIST on')
+                let textTask = evt.target.nextElementSibling.textContent
+                for (let i = 0; i < localStorage.length; i++) {
+                    if (JSON.parse(localStorage.getItem([i])).task === textTask) {
+                        objTask = JSON.parse(localStorage.getItem([i]))
+                        if (objTask.completed) {
+                            localStorage.setItem(i, JSON.stringify({task: objTask.task, completed: false}))
+                            console.log('input if', localStorage)
+                        } else {
+                            localStorage.setItem(i, JSON.stringify({task: objTask.task, completed: true}))
+                            console.log('input else', localStorage)
+                        }
+                    }
+                }
             } else if (checkbox.checked) {
                 item.classList.toggle('completed')
                 showList.disabled = false
                 showList.setAttribute('data-action', 'show')
             }
-            updateLocalStorage(taskText)
         }
     )
 }
-
-for (let i = 0; i < items.length; i++) {
-    addCheckHandler(items[i])
-}
-
+// for (let i = 0; i < items.length; i++) {
+//     addCheckHandler(items[i])
+// }
 newItemForm.addEventListener('submit', function (evt) {
     evt.preventDefault()
 
@@ -79,38 +96,36 @@ newItemForm.addEventListener('submit', function (evt) {
     let task = newItemTemplate.cloneNode(true)
     let taskDescription = task.querySelector('span')
     taskDescription.textContent = taskText
-    /*    tasksArr.push(taskText)
 
-        for (let i = 0; i < tasksArr.length; i++) {
-            localStorage.setItem(i, tasksArr[i])
-        }*/
     list.appendChild(task)
-
-    updateLocalStorage(taskText, count++)
     addCheckHandler(task)
     newItemTitle.value = ''
-
+    updateLocalStorage(taskText, count++)
 })
 
 function updateLocalStorage(taskName, i) {
-    let objTask
-    let completedTasks = list.querySelectorAll(':checked')
-    console.log('Amount of completed tasks:', completedTasks.length)
-    if (i === undefined) {
-        for (let i = 0; i < items.length; i++) {
-            if (items[i].classList.contains('completed')) {
-                objTask = JSON.parse(localStorage.getItem(i))
-                objTask.completed = true
-                localStorage.setItem(i, JSON.stringify({task: objTask.task, completed: objTask.completed}))
-                console.log(objTask)
+
+
+    if (i === undefined && taskName === undefined) {
+        let completedTasks = getCheckedElements()
+
+        for (let i = 0; i < completedTasks.length; i++) {
+            objTask = JSON.parse(localStorage.getItem(i))
+            if (completedTasks[i].checked) {
+                console.log(completedTasks[i].checked)
+                objTask = JSON.parse(localStorage.getItem([i]))
+                //localStorage.setItem(i, JSON.stringify({task: objTask.task, completed: true}))
+            } else {
+                console.log(completedTasks[i].checked)
+                objTask = JSON.parse(localStorage.getItem([i]))
+                localStorage.setItem(i, JSON.stringify({task: objTask.task, completed: false}))
             }
         }
     } else {
         localStorage.setItem(i, JSON.stringify({task: taskName, completed: false}))
-        //localStorage[i] = JSON.stringify({task: taskName, isCompleted: false})
         console.log('Add task! Amount: ' + items.length)
     }
-    console.log('Full list:', localStorage, items)
+    console.log('Full list:', localStorage)
 }
 
 
