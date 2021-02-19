@@ -86,29 +86,31 @@ newItemForm.addEventListener('submit', function (evt) {
         }*/
     list.appendChild(task)
 
-
-
     updateLocalStorage(taskText, count++)
     addCheckHandler(task)
-
     newItemTitle.value = ''
 
 })
 
 function updateLocalStorage(taskName, i) {
-
+    let objTask
     let completedTasks = list.querySelectorAll(':checked')
-
+    console.log('Amount of completed tasks:', completedTasks.length)
     if (i === undefined) {
         for (let i = 0; i < items.length; i++) {
             if (items[i].classList.contains('completed')) {
-                console.log('Update task!')
-            } else console.log('ERROR UPDATE!!!')
-        } console.log('Completed list: ', completedTasks)
+                objTask = JSON.parse(localStorage.getItem(i))
+                objTask.completed = true
+                localStorage.setItem(i, JSON.stringify({task: objTask.task, completed: objTask.completed}))
+                console.log(objTask)
+            }
+        }
     } else {
-        localStorage[i] = JSON.stringify({task: taskName, completed: false})
-        console.log('Add task! Full list:', localStorage, items)
+        localStorage.setItem(i, JSON.stringify({task: taskName, completed: false}))
+        //localStorage[i] = JSON.stringify({task: taskName, isCompleted: false})
+        console.log('Add task! Amount: ' + items.length)
     }
+    console.log('Full list:', localStorage, items)
 }
 
 
