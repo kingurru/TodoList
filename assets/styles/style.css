@@ -48,10 +48,9 @@ body {
     margin-left: 0;
 }
 
-.hideBtn {
+.deleteBtn {
     margin-right: 0;
 }
-
 
 [data-action="show"] {
     margin-left: 0;
@@ -73,20 +72,37 @@ body {
 
 
 [data-action="hide"] {
-    margin-right: 0;
-    background-color: #ff7e4a;
+    background-color: #5296ff;
     color: #ffffff;
 }
 
 [data-action="hide"]:hover,
 [data-action="hide"]:focus {
+    background-color: #287fff;
+    box-shadow: 0 0 8px #3c8dff;
+    outline: none;
+    cursor: pointer;
+}
+
+[data-action="hide"]:active {
+    background-color: #0051b5;
+}
+
+[data-action="delete"] {
+    margin-right: 0;
+    background-color: #ff7e4a;
+    color: #ffffff;
+}
+
+[data-action="delete"]:hover,
+[data-action="delete"]:focus {
     background-color: #ff5d1f;
     box-shadow: 0 0 8px #f58346;
     outline: none;
     cursor: pointer;
 }
 
-[data-action="hide"]:active {
+[data-action="delete"]:active {
     background-color: #b53300;
 }
 
