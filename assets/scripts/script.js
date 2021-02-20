@@ -15,19 +15,32 @@ getFromLocalStorage()
 
 function getFromLocalStorage() {
     for (let i = 0; i < localStorage.length; i++) {
-        objTask = JSON.parse(localStorage.getItem([i]))
-        localStorage.setItem(i, JSON.stringify({task: objTask.task, completed: false}))
-
         let task = newItemTemplate.cloneNode(true)
         let taskDescription = task.querySelector('span')
+        objTask = JSON.parse(localStorage.getItem([i]))
         taskDescription.textContent = objTask.task
         list.appendChild(task)
+
+        let checkbox = task.querySelector('.todo-list-input')
+
+        console.log(objTask)
+        if (objTask.completed) {
+            localStorage.setItem(i, JSON.stringify({task: objTask.task, completed: true}))
+            checkbox.checked = true
+            showList.disabled = false
+            hideList.disabled = true
+            hideList.removeAttribute('data-action')
+            showList.setAttribute('data-action', 'show')
+            task.classList.add('completed')
+        } else {
+            localStorage.setItem(i, JSON.stringify({task: objTask.task, completed: false}))
+            checkbox.checked = false
+        }
         addCheckHandler(task)
+        console.log(list)
+
     }
 }
-
-
-
 
 function addCheckHandler(item) {
     let checkbox = item.querySelector('.todo-list-input')
@@ -52,7 +65,7 @@ function addCheckHandler(item) {
         }
     })
 
-    checkbox.addEventListener('click', function (evt) {
+    checkbox.addEventListener('change', function (evt) {
             /*   // модуль удаления задач из LocalStorage, который срабатывает при изменении значения <input>
                  let taskText = (evt.target).nextElementSibling.textContent
                   for (let i = 0; i < localStorage.length; i++) {
@@ -94,7 +107,6 @@ function addCheckHandler(item) {
             }
         }
     )
-
 }
 
 
