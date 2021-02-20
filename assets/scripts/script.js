@@ -1,5 +1,7 @@
+console.log(localStorage)
+
 let list = document.querySelector('.todo-list')
-let items = list.children
+// let items = list.children
 let newItemForm = document.querySelector('.add-form')
 let newItemTitle = newItemForm.querySelector('.add-form-input')
 let taskTemplate = document.querySelector('#task-template').content
@@ -9,26 +11,27 @@ let hideList = document.querySelector('.hideBtn')
 let count = localStorage.length
 let objTask = {}
 
-// let tasksArr = []
+getFromLocalStorage()
 
-function getCheckedElements() {
-    return document.querySelectorAll(':checked')
+function getFromLocalStorage() {
+    for (let i = 0; i < localStorage.length; i++) {
+        objTask = JSON.parse(localStorage.getItem([i]))
+        localStorage.setItem(i, JSON.stringify({task: objTask.task, completed: false}))
+
+        let task = newItemTemplate.cloneNode(true)
+        let taskDescription = task.querySelector('span')
+        taskDescription.textContent = objTask.task
+        list.appendChild(task)
+        addCheckHandler(task)
+    }
 }
 
-localStorage.clear()
-/*for (let i = 0; i < localStorage.length; i++) {
-    let task = newItemTemplate.cloneNode(true)
-    let taskDescription = task.querySelector('span')
-    taskDescription.textContent = localStorage.getItem(i)
-    tasksArr.push(localStorage.getItem(i))
-    list.appendChild(task)
-    console.log(task)
-}*/
 
-let addCheckHandler = function (item) {
+
+
+function addCheckHandler(item) {
     let checkbox = item.querySelector('.todo-list-input')
-    let checkboxList = document.querySelectorAll('.todo-list-input')
-    console.log(checkboxList)
+
     showList.addEventListener('click', function () {
         if (checkbox.checked) {
             showList.disabled = true
@@ -49,7 +52,7 @@ let addCheckHandler = function (item) {
         }
     })
 
-    checkbox.addEventListener('change', function (evt) {
+    checkbox.addEventListener('click', function (evt) {
             /*   // модуль удаления задач из LocalStorage, который срабатывает при изменении значения <input>
                  let taskText = (evt.target).nextElementSibling.textContent
                   for (let i = 0; i < localStorage.length; i++) {
@@ -59,22 +62,26 @@ let addCheckHandler = function (item) {
                       }
                   }*/
             let completedTasks = getCheckedElements()
+
+            let textTask = evt.target.nextElementSibling.textContent
+
             if (completedTasks.length === 0) {
                 hideList.disabled = true
                 hideList.removeAttribute('data-action')
+                setStatus(false, textTask)
             }
             if (hideList.disabled === false && showList.disabled === true) {
-                console.log('SHOW LIST off & HIDE LIST on')
-                let textTask = evt.target.nextElementSibling.textContent
+                console.log('MODE MULTISELECT')
+
                 for (let i = 0; i < localStorage.length; i++) {
                     if (JSON.parse(localStorage.getItem([i])).task === textTask) {
                         objTask = JSON.parse(localStorage.getItem([i]))
                         if (objTask.completed) {
                             localStorage.setItem(i, JSON.stringify({task: objTask.task, completed: false}))
-                            console.log('input if', localStorage)
+                            console.log(localStorage)
                         } else {
                             localStorage.setItem(i, JSON.stringify({task: objTask.task, completed: true}))
-                            console.log('input else', localStorage)
+                            console.log(localStorage)
                         }
                     }
                 }
@@ -82,13 +89,15 @@ let addCheckHandler = function (item) {
                 item.classList.toggle('completed')
                 showList.disabled = false
                 showList.setAttribute('data-action', 'show')
+
+                setStatus(true, textTask)
             }
         }
     )
+
 }
-// for (let i = 0; i < items.length; i++) {
-//     addCheckHandler(items[i])
-// }
+
+
 newItemForm.addEventListener('submit', function (evt) {
     evt.preventDefault()
 
@@ -100,34 +109,27 @@ newItemForm.addEventListener('submit', function (evt) {
     list.appendChild(task)
     addCheckHandler(task)
     newItemTitle.value = ''
-    updateLocalStorage(taskText, count++)
+    addTaskLocalStorage(taskText, count++)
 })
 
-function updateLocalStorage(taskName, i) {
 
-
-    if (i === undefined && taskName === undefined) {
-        let completedTasks = getCheckedElements()
-
-        for (let i = 0; i < completedTasks.length; i++) {
-            objTask = JSON.parse(localStorage.getItem(i))
-            if (completedTasks[i].checked) {
-                console.log(completedTasks[i].checked)
-                objTask = JSON.parse(localStorage.getItem([i]))
-                //localStorage.setItem(i, JSON.stringify({task: objTask.task, completed: true}))
-            } else {
-                console.log(completedTasks[i].checked)
-                objTask = JSON.parse(localStorage.getItem([i]))
-                localStorage.setItem(i, JSON.stringify({task: objTask.task, completed: false}))
-            }
-        }
-    } else {
-        localStorage.setItem(i, JSON.stringify({task: taskName, completed: false}))
-        console.log('Add task! Amount: ' + items.length)
-    }
-    console.log('Full list:', localStorage)
+function addTaskLocalStorage(taskText, i) {
+    localStorage.setItem(i, JSON.stringify({task: taskText, completed: false}))
+    console.log('Add task! Amount: ' + count, localStorage)
 }
 
+function getCheckedElements() {
+    return document.querySelectorAll(':checked')
+}
 
-console.log('localStorage end', localStorage)
+function setStatus(isCompleted, textTask) {
+    for (let i = 0; i < localStorage.length; i++) {
+        if (JSON.parse(localStorage.getItem([i])).task === textTask) {
+            objTask = JSON.parse(localStorage.getItem([i]))
+            localStorage.setItem(i, JSON.stringify({task: objTask.task, completed: isCompleted}))
+            console.log(localStorage)
+        }
+    }
+}
+
 
